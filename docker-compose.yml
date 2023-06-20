@@ -1,0 +1,76 @@
+version: '3.9'
+
+networks:
+  transcendence:
+    driver: bridge
+
+services:
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                    DATABASE                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+ database:
+    networks:
+      - transcendence
+    build: srcs/db
+    container_name: db
+    image: postgres
+    env_file:
+      - "./.env"
+    # volumes:
+    #   - "db:/var/lib/postgresql/data"
+    restart: always
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                   BACK-TEND                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+ back-end:
+    networks:
+    - transcendence
+    depends_on:
+      - database
+    build: srcs/back-end
+    container_name: back-end
+    image: back-end
+    env_file:
+      - "./.env"
+    ports:
+      - "4000:4000"
+      - "5555:5555"
+    volumes:
+      - "./srcs/back-end/ft_transcendence:/ft_transcendence"
+    restart: always
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                   FRONT-TEND                        #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # #
+ front-end:
+    networks:
+      - transcendence
+    depends_on:
+      - back-end
+    build: srcs/front-end
+    container_name: front-end
+    image: front-end
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./srcs/front-end/ft_transcendence:/ft_transcendence"
+    restart: always
+
+# volumes:
+#   db:
+#     driver: local
+#     driver_opts:
+#       o: 'bind'
+#       type: 'none'
+#       device: '/${HOME}/data/db'
+#   back-end:
+#     driver: local
+#     driver_opts:
+#       o: 'bind'
+#       type: 'none'
+#       device: './srcs/back-end/ft_transcendence/'
+#   front-end:
+#     driver: local
+#     driver_opts:
+#       o: 'bind'
+#       type: 'none'
+#       device: './srcs/front-end/ft_transcendence'
