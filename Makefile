@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asimon <asimon@student.42.fr>              +#+  +:+       +#+         #
+#    By: idouidi <idouidi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 20:16:48 by idouidi           #+#    #+#              #
-#    Updated: 2023/06/16 18:08:04 by asimon           ###   ########.fr        #
+#    Updated: 2023/06/22 16:48:58 by idouidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,3 +39,6 @@ front-end:
 	docker exec -it front-end bash
 
 .PHONY: up down re ps clean front-end back-end db
+
+# flag de reconnaisance dans l'arborressence du projet
+# Reminder: 🚨
