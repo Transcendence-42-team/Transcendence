@@ -3,13 +3,23 @@ import React, { useState, useEffect, FC } from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
-  
+import { cryptoRandomStringAsync } from 'crypto-random-string';
+import { randomBytes } from 'crypto';
+
+
+export const generateSecretKey = () => {
+  const secretLength = 32; // Longueur de la clé secrète en caractères (vous pouvez ajuster la longueur selon vos besoins)
+  return randomBytes(secretLength);
+};
+
+
+
 const FIND_USER_BY_INTRA_LOGIN = gql`
   query FindOneUserByIntraLogin($intra_login: String!) {
     findOneUserByIntraLogin(intra_login: $intra_login) {
+      id
       token
       email
-      intra_login
       nickname
       avatar
     }
@@ -26,6 +36,15 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
       }
     }
   `;
+
+  const UPDATE_USER = gql`
+  mutation UpdateUser($updateUserInput: UpdateUserInput!) {
+    updateUser(updateUserInput: $updateUserInput) {
+      id
+      token
+    }
+  }
+`;
 
   const Authentication: FC = () => {
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
@@ -71,12 +90,12 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
     
     .then(response => {
       console.log('User created:', response.data.createUser);
-      setUserCookie('user', user_info, {
-        path: '/',
-        // 🚨secure: true, // Envoie le cookie uniquement sur des connexions HTTPS sécurisées
-        httpOnly: true, // Le cookie ne peut pas être accédé par JavaScript
-        sameSite: 'strict' // Le cookie ne sera pas inclus dans les requêtes provenant d'un site tiers
-      });
+      // setUserCookie('user', user_info, {
+      //   path: '/',
+      //   // 🚨secure: true, // Envoie le cookie uniquement sur des connexions HTTPS sécurisées
+      //   httpOnly: true, // Le cookie ne peut pas être accédé par JavaScript
+      //   sameSite: 'strict' // Le cookie ne sera pas inclus dans les requêtes provenant d'un site tiers
+      // });
     })
     
     .catch(error => {
@@ -96,6 +115,10 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
   
   // Une requete de type Mutation pour creer un user
   const [createUser] = useMutation(CREATE_USER);
+
+ // Une requete de type Mutation pour update les info d'un user
+  const [updateUserMutation] = useMutation(UPDATE_USER);
+
 
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
   /*                      USE EFFECT                        */
@@ -173,13 +196,24 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
       setCanCheck(true);
       if (findUserDataQuery)
       {
-
-        setUserCookie('user', findUserDataQuery.findOneUserByIntraLogin, {
-          path: '/',
-          //🚨 secure: true, // Envoie le cookie uniquement sur des connexions HTTPS sécurisées 
-          httpOnly: true, // Le cookie ne peut pas être accédé par JavaScript
-          sameSite: 'strict' // Le cookie ne sera pas inclus dans les requêtes provenant d'un site tiers
+        const updateUserInput = {
+          id: findUserDataQuery.findOneUserByIntraLogin.id, 
+          token: generateSecretKey()
+        }
+        updateUserMutation({ variables: { updateUserInput } })
+        .then((result) => {
+          console.log(result);
+          setUserCookie('user', result, {
+            path: '/',
+            //🚨 secure: true, // Envoie le cookie uniquement sur des connexions HTTPS sécurisées 
+            httpOnly: true, // Le cookie ne peut pas être accédé par JavaScript
+            sameSite: 'strict' // Le cookie ne sera pas inclus dans les requêtes provenant d'un site tiers
+          });
+        })
+        .catch((error) => {
+          // Gérer les erreurs de la mutation si nécessaire
         });
+        
       }
 
     }

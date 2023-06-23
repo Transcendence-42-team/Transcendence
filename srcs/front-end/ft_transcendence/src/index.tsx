@@ -1,13 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, createHttpLink, concat } from '@apollo/client';
 import App from './App';
 
+// const authMiddleware = new ApolloLink((operation, forward) => {
+//   operation.setContext(({ headers }) => {
+//     return {
+//       headers: {
+//         ...headers,
+//         Authorization: token ? `Bearer ${token}` : '',
+//       },
+//     };
+//   });
+
+//   return forward(operation);
+// });
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000/graphql', // Remplacez par l'URL de votre serveur GraphQL
+});
+
 const apollo_client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql', // Utilisez l'adresse IP du conteneur "back-end"
+  link: httpLink,
   cache: new InMemoryCache(),
 });
+
+// apollo_client.link = concat(authMiddleware, httpLink);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,7 +38,6 @@ root.render(
     </ApolloProvider>
   </React.StrictMode>
 );
-
 
 reportWebVitals();
 // If you want to start measuring performance in your app, pass a function

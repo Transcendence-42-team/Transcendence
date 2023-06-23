@@ -73,16 +73,16 @@ type Mutation {
 }
 
 input CreateUserInput {
-  email: String!
   token: String!
+  email: String!
   intra_login: String!
   nickname: String!
   avatar: String
 }
 
 input UpdateUserInput {
-  email: String
   token: String
+  email: String
   intra_login: String
   nickname: String
   avatar: String
