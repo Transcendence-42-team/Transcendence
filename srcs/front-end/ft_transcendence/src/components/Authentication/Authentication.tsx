@@ -40,6 +40,7 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
   });
   
   const [code, setCode] = useState<string>('');
+
   const [canCheck, setCanCheck] = useState(false);
 
   const [userCookies, setUserCookie] = useCookies(['user']);
@@ -63,28 +64,44 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
       intra_login: userData.login,
       nickname: nickname.value,
       email: email.value,
-      avatar: avatar.value        
-    }
+      avatar: avatar.value
+    };
+  
     createUser({
       variables: {
         input: user_info
       }
     })
-    
-    .then(response => {
-      console.log('User created:', response.data.createUser);
-      // setUserCookie('user', user_info, {
-      //   path: '/',
-      //   // 🚨secure: true, // Envoie le cookie uniquement sur des connexions HTTPS sécurisées
-      //   httpOnly: true, // Le cookie ne peut pas être accédé par JavaScript
-      //   sameSite: 'strict' // Le cookie ne sera pas inclus dans les requêtes provenant d'un site tiers
-      // });
-    })
-    
-    .catch(error => {
+      .then(response => {
+        console.log('User created:', response.data.createUser);
+  
+        const cookieData = {
+          id: response.data.createUser.id, 
+          token: response.data.createUser.token 
+        };
+  
+        const sessionStorageData = {
+          nickname: response.data.createUser.nickname, 
+          email: response.data.createUser.email, 
+          avatar: response.data.createUser.avatar 
+        };
+  
+        // Les infos sensibles sont stockées dans un cookie sécurisé
+        setUserCookie('user', cookieData, {
+          path: '/',
+          secure: true,
+          httpOnly: true,
+          sameSite: 'strict'
+        });
+  
+        // Les infos publiques sont stockées dans le sessionStorage
+        sessionStorage.setItem('user', JSON.stringify(sessionStorageData));
+      })
+      .catch(error => {
         console.error('Error creating user:', error);
       });
   };
+  
 
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
   /*                      REQUEST                           */
@@ -172,23 +189,35 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
   // il permet au return d'afficher le rendu au bon moment.
   // il met a jour le cookie "user" avec les info reçu de la commande query  
   useEffect(() => {
-    if (findUserDataQuery || findUserErrorQuery || findUserLoadingQuery)
-    {
+    if (findUserDataQuery || findUserErrorQuery || findUserLoadingQuery) {
       setCanCheck(true);
-      if (findUserDataQuery)
-      {
-        console.log(findUserDataQuery.findOneUserByIntraLogin)
-          // setUserCookie('user', result, {
-          //   path: '/',
-          //   //🚨 secure: true, // Envoie le cookie uniquement sur des connexions HTTPS sécurisées 
-          //   httpOnly: true, // Le cookie ne peut pas être accédé par JavaScript
-          //   sameSite: 'strict' // Le cookie ne sera pas inclus dans les requêtes provenant d'un site tiers
-          // });
+      if (findUserDataQuery) {
+        console.log(findUserDataQuery.findOneUserByIntraLogin);
+        const cookieData = {
+          id: findUserDataQuery.findOneUserByIntraLogin.id,
+          token: findUserDataQuery.findOneUserByIntraLogin.token
+        };
+  
+        const sessionStorageData = {
+          nickname: findUserDataQuery.findOneUserByIntraLogin.nickname,
+          email: findUserDataQuery.findOneUserByIntraLogin.email,
+          avatar: findUserDataQuery.findOneUserByIntraLogin.avatar
+        };
+  
+        // Les infos sensibles sont stockées dans un cookie sécurisé
+        setUserCookie('user', cookieData, {
+          path: '/',
+          secure: true,
+          httpOnly: true,
+          sameSite: 'strict'
+        });
+  
+        // Les infos publiques sont stockées dans le sessionStorage
+        sessionStorage.setItem('user', JSON.stringify(sessionStorageData));
       }
-
     }
   }, [findUserDataQuery, findUserLoadingQuery, findUserErrorQuery]);
-
+  
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
   /*                      RETURN                            */
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
