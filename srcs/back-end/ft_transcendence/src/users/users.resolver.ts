@@ -1,4 +1,5 @@
-import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context} from '@nestjs/graphql';
+import { ForbiddenException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
@@ -14,19 +15,24 @@ export class UsersResolver {
   }
 
   @Query(() => [User], { name: 'findAllUsers' })
-  findAll() {
+  findAll(@Context() context: any) {
+
+    const {token} = context;
+    if (!token || !this.usersService.findUserByToken(token)) {
+      throw new ForbiddenException('Invalid token');
+    }
     return this.usersService.findAll();
   }
 
   @Query(() => User, { name: 'findOneUserById' })
   findOneUserById(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.findOneUserById(id);
+    return this.usersService.findUserById(id);
   }
 
 
   @Query(() => User, { name: 'findOneUserByIntraLogin' })
   findOneUserByIntraLogin(@Args('intra_login', { type: () => String }) intra_login: string) {
-    return this.usersService.findOneUserByIntraLogin(intra_login);
+    return this.usersService.findUserByIntraLogin(intra_login);
   }
 
 

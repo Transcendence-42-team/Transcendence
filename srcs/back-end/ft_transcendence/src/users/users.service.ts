@@ -42,11 +42,15 @@ export class UsersService {
     return this.prisma.user.findMany({});
   }
 
-  findOneUserById(id: number) {
+  findUserById(id: number) {
     return this.prisma.user.findUnique({where: {id}});
   }
 
-  async findOneUserByIntraLogin(intra_login: string) {
+    findUserByToken(token: string) {
+    return this.prisma.user.findUnique({where: {token}});
+  }
+
+  async findUserByIntraLogin(intra_login: string) {
     const user = await this.prisma.user.findUnique({ where: { intra_login } });
 
     // Cette verification permet de savoir si cette query est lancé a l'authentification 

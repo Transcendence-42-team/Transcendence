@@ -234,7 +234,7 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
                 <>
                 {!findUserLoadingQuery && !findUserErrorQuery && findUserDataQuery ? (
                   <>
-                  <p> {userCookies.user?.ncikname}</p>
+                  <p> {userCookies.user?.nickname}</p>
                   </>
                 ) : (
                   <form onSubmit={handleCreateUser}>

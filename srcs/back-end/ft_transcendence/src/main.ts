@@ -18,6 +18,7 @@ async function bootstrap() {
   const server = new ApolloServer({
     schema
   });
+  
 const { url } = await startStandaloneServer(server, {
   context: async ({ req }) => ({ token: req.headers.token }),
   listen: { port: 4000 },

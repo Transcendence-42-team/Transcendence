@@ -1,31 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, createHttpLink, concat } from '@apollo/client';
+
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache, ApolloLink } from '@apollo/client';
+
+import { useCookies } from 'react-cookie';
+
 import App from './App';
 
-// const authMiddleware = new ApolloLink((operation, forward) => {
-//   operation.setContext(({ headers }) => {
-//     return {
-//       headers: {
-//         ...headers,
-//         Authorization: token ? `Bearer ${token}` : '',
-//       },
-//     };
-//   });
-
-//   return forward(operation);
-// });
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql', // Remplacez par l'URL de votre serveur GraphQL
 });
 
+// Créez une instance de ApolloLink personnalisée pour intercepter les requêtes sortantes
+const authLink = new ApolloLink((operation, forward) => {
+  const [cookies] = useCookies(['user']);
+  const { user } = cookies;
+
+  // Ajoutez le cookie `user` en tant qu'en-tête `Authorization`
+  operation.setContext(({ headers }: { headers: Record<string, string> }) => ({
+    headers: {
+      ...headers,
+      Authorization: user ? `Bearer ${user.token}` : '',
+    },
+  }));
+  // Poursuivez l'opération en renvoyant la requête modifiée
+  return forward(operation);
+});
+const link = authLink.concat(httpLink);
+
 const apollo_client = new ApolloClient({
-  link: httpLink,
+  link: link,
   cache: new InMemoryCache(),
 });
-
-// apollo_client.link = concat(authMiddleware, httpLink);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
