@@ -4,8 +4,9 @@
 
 type User {
   id: Int!
-  email: String!
   token: String!
+  is_connecting: Boolean!
+  email: String!
   intra_login: String!
   nickname: String!
   avatar: String
@@ -73,7 +74,6 @@ type Mutation {
 }
 
 input CreateUserInput {
-  token: String!
   email: String!
   intra_login: String!
   nickname: String!
@@ -81,7 +81,6 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
-  token: String
   email: String
   intra_login: String
   nickname: String

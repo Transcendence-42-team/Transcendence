@@ -1,9 +1,10 @@
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
+    "token" TEXT,
+    "is_connecting" BOOLEAN DEFAULT true,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "token" INTEGER NOT NULL,
+    "intra_login" TEXT NOT NULL,
     "nickname" TEXT NOT NULL,
     "avatar" TEXT,
 
@@ -66,13 +67,19 @@ CREATE TABLE "Message" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
 CREATE UNIQUE INDEX "User_token_key" ON "User"("token");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_intra_login_key" ON "User"("intra_login");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_nickname_key" ON "User"("nickname");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Contact_user_id_contact_id_key" ON "Contact"("user_id", "contact_id");
 
 -- AddForeignKey
 ALTER TABLE "Contact" ADD CONSTRAINT "Contact_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

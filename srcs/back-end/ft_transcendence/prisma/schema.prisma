@@ -12,8 +12,9 @@ datasource db {
 
 model User {
 	id					Int             @id @default(autoincrement())
+	token				String?         @unique
+	is_connecting		Boolean?		@default(true)
 	email				String          @unique
-	token				String          @unique
 	intra_login			String			@unique
 	nickname			String          @unique
 	avatar				String?
