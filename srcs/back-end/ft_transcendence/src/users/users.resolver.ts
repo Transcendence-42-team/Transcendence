@@ -18,20 +18,21 @@ export class UsersResolver {
   findAll(@Context() context: any) {
 
     const {token} = context;
+    console.log('dans le resolveur', token);
     if (!token || !this.usersService.findUserByToken(token)) {
       throw new ForbiddenException('Invalid token');
     }
     return this.usersService.findAll();
   }
 
-  @Query(() => User, { name: 'findOneUserById' })
-  findOneUserById(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => User, { name: 'findUserById' })
+  findUserById(@Args('id', { type: () => Int }) id: number) {
     return this.usersService.findUserById(id);
   }
 
 
-  @Query(() => User, { name: 'findOneUserByIntraLogin' })
-  findOneUserByIntraLogin(@Args('intra_login', { type: () => String }) intra_login: string) {
+  @Query(() => User, { name: 'findUserByIntraLogin' })
+  findUserByIntraLogin(@Args('intra_login', { type: () => String }) intra_login: string) {
     return this.usersService.findUserByIntraLogin(intra_login);
   }
 

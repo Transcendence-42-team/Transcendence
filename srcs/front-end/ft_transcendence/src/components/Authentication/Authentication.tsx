@@ -7,8 +7,8 @@ import axios from 'axios';
 
 
 const FIND_USER_BY_INTRA_LOGIN = gql`
-  query FindOneUserByIntraLogin($intra_login: String!) {
-    findOneUserByIntraLogin(intra_login: $intra_login) {
+  query FindUserByIntraLogin($intra_login: String!) {
+    findUserByIntraLogin(intra_login: $intra_login) {
       id
       token
       email
@@ -59,47 +59,47 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
   const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { nickname, email, avatar } = e.currentTarget;
-    console.log(nickname.value, email.value, avatar.value);
     const user_info = {
       intra_login: userData.login,
       nickname: nickname.value,
       email: email.value,
       avatar: avatar.value
     };
-  
+    
     createUser({
       variables: {
         input: user_info
       }
     })
-      .then(response => {
-        console.log('User created:', response.data.createUser);
-  
-        const cookieData = {
-          id: response.data.createUser.id, 
-          token: response.data.createUser.token 
-        };
-  
-        const sessionStorageData = {
-          nickname: response.data.createUser.nickname, 
-          email: response.data.createUser.email, 
-          avatar: response.data.createUser.avatar 
-        };
-  
-        // Les infos sensibles sont stockées dans un cookie sécurisé
-        setUserCookie('user', cookieData, {
-          path: '/',
-          secure: true,
-          httpOnly: true,
-          sameSite: 'strict'
-        });
-  
-        // Les infos publiques sont stockées dans le sessionStorage
-        sessionStorage.setItem('user', JSON.stringify(sessionStorageData));
-      })
-      .catch(error => {
-        console.error('Error creating user:', error);
+    .then(response => {
+      console.log('User created:', response.data.createUser);
+      
+      const cookieData = {
+        id: response.data.createUser.id, 
+        token: response.data.createUser.token 
+      };
+      
+      const sessionStorageData = {
+        nickname: response.data.createUser.nickname, 
+        email: response.data.createUser.email, 
+        avatar: response.data.createUser.avatar 
+      };
+      
+      // Les infos sensibles sont stockées dans un cookie sécurisé
+      setUserCookie('user', cookieData, {
+        path: '/',
+        // secure: true,
+        httpOnly: true,
+        sameSite: 'strict'
       });
+      
+      // Les infos publiques sont stockées dans le sessionStorage
+      sessionStorage.setItem('user', JSON.stringify(sessionStorageData));
+    })
+    .catch(error => {
+      console.error('Error creating user:', error);
+    });
+    console.log(nickname.value, email.value, avatar.value);
   };
   
 
@@ -192,26 +192,26 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
     if (findUserDataQuery || findUserErrorQuery || findUserLoadingQuery) {
       setCanCheck(true);
       if (findUserDataQuery) {
-        console.log(findUserDataQuery.findOneUserByIntraLogin);
+        console.log(findUserDataQuery.findUserByIntraLogin);
+        
         const cookieData = {
-          id: findUserDataQuery.findOneUserByIntraLogin.id,
-          token: findUserDataQuery.findOneUserByIntraLogin.token
+          id: findUserDataQuery.findUserByIntraLogin.id,
+          token: findUserDataQuery.findUserByIntraLogin.token
         };
   
         const sessionStorageData = {
-          nickname: findUserDataQuery.findOneUserByIntraLogin.nickname,
-          email: findUserDataQuery.findOneUserByIntraLogin.email,
-          avatar: findUserDataQuery.findOneUserByIntraLogin.avatar
+          nickname: findUserDataQuery.findUserByIntraLogin.nickname,
+          email: findUserDataQuery.findUserByIntraLogin.email,
+          avatar: findUserDataQuery.findUserByIntraLogin.avatar
         };
-  
         // Les infos sensibles sont stockées dans un cookie sécurisé
         setUserCookie('user', cookieData, {
           path: '/',
-          secure: true,
+          // secure: true,
           httpOnly: true,
           sameSite: 'strict'
         });
-  
+        
         // Les infos publiques sont stockées dans le sessionStorage
         sessionStorage.setItem('user', JSON.stringify(sessionStorageData));
       }

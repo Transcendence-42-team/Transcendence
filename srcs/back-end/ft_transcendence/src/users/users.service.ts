@@ -14,11 +14,11 @@ export class UsersService {
       const user = await this.prisma.user.create({
         data: createUserInput
       });
-      const token = generateAccessToken(user.id);
-      const is_connecting = false;
 
       //lors de la creation du User nous mettons a jour le token
       // et un bouleen servant a la verification de la connexion du user
+      const token = generateAccessToken(user.id);
+      const is_connecting = false;
       await this.prisma.user.update({
         where: { id: user.id },
         data: { token, is_connecting }

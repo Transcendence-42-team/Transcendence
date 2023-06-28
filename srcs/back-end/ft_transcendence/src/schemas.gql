@@ -51,9 +51,10 @@ type Contact {
 }
 
 type Query {
+  getCookieByName(cookieName: String!): String!
   findAllUsers: [User!]!
-  findOneUserById(id: Int!): User!
-  findOneUserByIntraLogin(intra_login: String!): User!
+  findUserById(id: Int!): User!
+  findUserByIntraLogin(intra_login: String!): User!
   Channel_findAll: [Chanel!]!
   Channel_findOne(id: Int!): Chanel!
   contacts(user_id: Int!): [Contact!]!

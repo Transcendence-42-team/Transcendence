@@ -5,6 +5,7 @@ import { ChanelModule } from './chanel/chanel.module';
 import { MessagesModule } from './messages/messages.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ContactsModule } from './contacts/contacts.module';
+import { CookiesResolver } from './cookies/cookies.resolver';
 import { join } from 'path';
 
 
@@ -21,5 +22,6 @@ import { join } from 'path';
 		MessagesModule,
 		ContactsModule
 	],
+	providers:[CookiesResolver],
 })
 export class AppModule {}
