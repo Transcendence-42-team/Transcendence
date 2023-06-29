@@ -33,7 +33,6 @@ services:
     env_file:
       - "./.env"
     ports:
-      - "4000:4000"
       - "5555:5555"
     volumes:
       - "./srcs/back-end/ft_transcendence:/ft_transcendence"

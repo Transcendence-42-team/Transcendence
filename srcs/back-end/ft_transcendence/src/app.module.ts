@@ -8,8 +8,6 @@ import { ContactsModule } from './contacts/contacts.module';
 import { CookiesResolver } from './cookies/cookies.resolver';
 import { join } from 'path';
 
-
-
 @Module({
 	imports: [
 		GraphQLModule.forRoot<ApolloDriverConfig>({

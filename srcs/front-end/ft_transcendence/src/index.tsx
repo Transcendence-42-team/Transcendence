@@ -1,45 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ApolloClient, createHttpLink, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloClient, createHttpLink, InMemoryCache, ApolloProvider} from '@apollo/client';
 
 import App from './App';
 
-const GET_COOKIE = gql`
-query GetCookieByName($cookieName: String!) {
-  getCookieByName(cookieName: $cookieName)
-}
-`;
-
-
-
-// const authLink = setContext(async (_, { headers }) => {
-//   try {
-    
-//     const cookie = "tessst";
-//     console.log('cookie', cookie);
-    
-//     return {
-//         headers: {
-//             ...headers,
-//             authorization: cookie ? `Bearer ${cookie}` : '',
-//           },
-//         };
-//       } catch (error) {
-//           console.log("Une erreur s'est produite :", error);
-//           return {
-//               headers,
-//             };
-//           }
-//         });
         
 const httpLink = createHttpLink({
-   uri: 'http://localhost:4000/graphql', 
+   uri: 'http://192.168.192.3:4000/graphql',
    credentials: 'include'
  });
 
 const apollo_client = new ApolloClient({
-  link: httpLink, //authLink.concat(httpLink), 
+  link: httpLink,
   cache: new InMemoryCache(),
 });
 
