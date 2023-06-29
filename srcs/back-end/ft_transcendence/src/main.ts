@@ -8,8 +8,7 @@ async function bootstrap() {
   config();
   process.env.SECRET_KEY = generateSecretKey().toString('hex');
   const app = await NestFactory.create(AppModule);
-  await app.init();
-
+  
   app.enableCors({
     origin: 'http://localhost:8080',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -19,8 +18,9 @@ async function bootstrap() {
     allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
     exposedHeaders: 'Content-Disposition',
     maxAge: 86400,
-  });
+  })
   await app.listen(4000);
+
 }
 
 bootstrap();
