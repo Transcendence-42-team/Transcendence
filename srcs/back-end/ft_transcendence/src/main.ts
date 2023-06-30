@@ -1,16 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { config } from 'dotenv';
-import { generateSecretKey } from './utils/auth.utils';
+
 
 
 async function bootstrap() {
-  config();
-  process.env.SECRET_KEY = generateSecretKey().toString('hex');
   const app = await NestFactory.create(AppModule);
-  
+
   app.enableCors({
-    origin: 'http://localhost:8080',
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,

@@ -51,7 +51,6 @@ type Contact {
 }
 
 type Query {
-  getCookieByName(cookieName: String!): String!
   findAllUsers: [User!]!
   findUserById(id: Int!): User!
   findUserByIntraLogin(intra_login: String!): User!

@@ -30,9 +30,12 @@ services:
     build: srcs/back-end
     container_name: back-end
     image: back-end
-    env_file:
-      - "./.env"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - WEBSITE_URL=${WEBSITE_URL}
+      - CLIENT_SECRET_BACKEND=${CLIENT_SECRET_BACKEND}
     ports:
+      # - "4000:4000"
       - "5555:5555"
     volumes:
       - "./srcs/back-end/ft_transcendence:/ft_transcendence"
@@ -49,6 +52,12 @@ services:
     build: srcs/front-end
     container_name: front-end
     image: front-end
+    environment:
+      - REACT_APP_WEBSITE_URL=${WEBSITE_URL}
+      - REACT_APP_API_42_URL=${API_42_URL}
+      - REACT_APP_CLIENT_ID_API_42=${CLIENT_ID_API_42}
+      - REACT_APP_CLIENT_SECRET_API_42=${CLIENT_SECRET_API_42}
+      - REACT_APP_CLIENT_SECRET_BACKEND=${CLIENT_SECRET_BACKEND}
     ports:
       - "8080:8080"
     volumes:

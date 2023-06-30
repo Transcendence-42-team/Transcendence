@@ -33,6 +33,7 @@ export class UsersService {
       return updatedUser;
     } 
     catch (error) {
+      console.log(error);
       throw new Error("Échec de la création de l'utilisateur.");
     }
   }

@@ -1,10 +1,7 @@
 
 import React, { useState, useEffect, FC } from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
-import { useCookies } from 'react-cookie';
 import axios from 'axios';
-
-
 
 const FIND_USER_BY_INTRA_LOGIN = gql`
   query FindUserByIntraLogin($intra_login: String!) {
@@ -31,6 +28,7 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
   `;
 
   const Authentication: FC = () => {
+  
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
   /*                      STATE                             */
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
@@ -43,17 +41,17 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
 
   const [canCheck, setCanCheck] = useState(false);
 
-  const [userCookies, setUserCookie] = useCookies(['user']);
 
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
   /*                      HANDLE                            */
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
 
 //L'utilisateur est redirigé vers 42 api Oauth pour se connecter au site
+
   const handleSignIn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    window.location.href = "https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-8080a9dd49bd7eeeefcfb34e552ffec79991e6fb973b6debbd2b1e7874a5ee91&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2F&response_type=code";
-  };
+    window.location.href = process.env.REACT_APP_API_42_URL?.toString() || '';
+  }
 
   // Nous utilisons les informations du formulaire envoyé par l'utilisateur pour créer son profil sur la base de données
   const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,28 +71,7 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
     })
     .then(response => {
       console.log('User created:', response.data.createUser);
-      
-      const cookieData = {
-        id: response.data.createUser.id, 
-        token: response.data.createUser.token 
-      };
-      
-      const sessionStorageData = {
-        nickname: response.data.createUser.nickname, 
-        email: response.data.createUser.email, 
-        avatar: response.data.createUser.avatar 
-      };
-      
-      // Les infos sensibles sont stockées dans un cookie sécurisé
-      setUserCookie('user', cookieData, {
-        path: '/',
-        // secure: true,
-        httpOnly: true,
-        sameSite: 'strict'
-      });
-      
-      // Les infos publiques sont stockées dans le sessionStorage
-      sessionStorage.setItem('user', JSON.stringify(sessionStorageData));
+      sessionStorage.setItem('user', JSON.stringify(response.data.createUser));
     })
     .catch(error => {
       console.error('Error creating user:', error);
@@ -138,10 +115,10 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
 
       const requestData = {
         grant_type: 'authorization_code',
-        client_id: 'u-s4t2ud-8080a9dd49bd7eeeefcfb34e552ffec79991e6fb973b6debbd2b1e7874a5ee91',
-        client_secret: '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',
+        client_id: process.env.REACT_APP_CLIENT_ID_API_42,
+        client_secret: process.env.REACT_APP_CLIENT_SECRET_API_42,
         code: code,
-        redirect_uri: 'http://localhost:8080/',
+        redirect_uri: process.env.REACT_APP_WEBSITE_URL,
       };
 
       axios.post('https://api.intra.42.fr/oauth/token', requestData)
@@ -187,44 +164,24 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
   
   // Ce useEffect est activé quand l'une des variables-objet (findUserDataQuery, findUserErrorQuery, findUserLoadingQuery) est changé
   // il permet au return d'afficher le rendu au bon moment.
-  // il met a jour le cookie "user" avec les info reçu de la commande query  
+  // il met a jour le session storage "user" avec les info reçu de la commande query  
   useEffect(() => {
     if (findUserDataQuery || findUserErrorQuery || findUserLoadingQuery) {
       setCanCheck(true);
       if (findUserDataQuery) {
-        console.log(findUserDataQuery.findUserByIntraLogin);
-        
-        const cookieData = {
-          id: findUserDataQuery.findUserByIntraLogin.id,
-          token: findUserDataQuery.findUserByIntraLogin.token
-        };
-  
-        const sessionStorageData = {
-          nickname: findUserDataQuery.findUserByIntraLogin.nickname,
-          email: findUserDataQuery.findUserByIntraLogin.email,
-          avatar: findUserDataQuery.findUserByIntraLogin.avatar
-        };
-        // Les infos sensibles sont stockées dans un cookie sécurisé
-        setUserCookie('user', cookieData, {
-          path: '/',
-          // secure: true,
-          httpOnly: true,
-          sameSite: 'strict'
-        });
-        
-        // Les infos publiques sont stockées dans le sessionStorage
-        sessionStorage.setItem('user', JSON.stringify(sessionStorageData));
+        sessionStorage.setItem('user', JSON.stringify(findUserDataQuery.findUserByIntraLogin));
       }
     }
   }, [findUserDataQuery, findUserLoadingQuery, findUserErrorQuery]);
+
   
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
   /*                      RETURN                            */
   /*    ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   ~   */
   return (
     <div>
-      {userCookies.user ? (
-        <p>acces au site</p>
+      {sessionStorage.getItem('user') ? (
+        <p>acces au site apres connexion </p>
       ) : (
         <>
           <div>
@@ -234,7 +191,7 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
                 <>
                 {!findUserLoadingQuery && !findUserErrorQuery && findUserDataQuery ? (
                   <>
-                  <p> {userCookies.user?.nickname}</p>
+                  <p> acces au site apres connexion</p>
                   </>
                 ) : (
                   <form onSubmit={handleCreateUser}>
@@ -251,7 +208,6 @@ const FIND_USER_BY_INTRA_LOGIN = gql`
       )}
     </div>
   );
-  
 };
 
 export default Authentication;
