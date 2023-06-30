@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install -y \
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
 
-ENV REACT_APP_API_42_URL $REACT_APP_API_42_URL
-
 # Copie des fichiers du projet
 COPY ./ft_transcendence /ft_transcendence/
 

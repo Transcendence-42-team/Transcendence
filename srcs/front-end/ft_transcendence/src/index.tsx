@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom/client';
 import { ApolloClient, createHttpLink, InMemoryCache, ApolloProvider} from '@apollo/client';
 
 import App from './App';
- 
-        
+
 const httpLink = createHttpLink({
-  uri: 'http://back-end:4000/graphql',
+  uri: 'http://localhost:4000/graphql',
    credentials: 'include'
  });
 
