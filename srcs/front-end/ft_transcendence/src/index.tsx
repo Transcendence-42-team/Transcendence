@@ -6,7 +6,7 @@ import App from './App';
  
         
 const httpLink = createHttpLink({
-   uri: 'http://172.22.0.3:4000/graphql',
+  uri: 'http://back-end:4000/graphql',
    credentials: 'include'
  });
 

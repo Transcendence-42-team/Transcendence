@@ -34,9 +34,6 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - WEBSITE_URL=${WEBSITE_URL}
       - CLIENT_SECRET_BACKEND=${CLIENT_SECRET_BACKEND}
-    ports:
-      # - "4000:4000"
-      - "5555:5555"
     volumes:
       - "./srcs/back-end/ft_transcendence:/ft_transcendence"
     restart: always
@@ -63,6 +60,7 @@ services:
     volumes:
       - "./srcs/front-end/ft_transcendence:/ft_transcendence"
     restart: always
+
 
 # volumes:
 #   db:
