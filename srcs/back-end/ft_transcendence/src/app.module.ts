@@ -7,6 +7,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ContactsModule } from './contacts/contacts.module';
 import 	{AuthMiddleware} from './utils/auth.utils'
 import { join } from 'path';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
 	imports: [
@@ -21,7 +22,8 @@ import { join } from 'path';
 		UsersModule,
 		ChanelModule,
 		MessagesModule,
-		ContactsModule
+		ContactsModule,
+		AuthenticationModule
 	],
 })
 export class AppModule {

@@ -53,14 +53,13 @@ type Contact {
 type Query {
   findAllUsers: [User!]!
   findUserById(id: Int!): User!
-  findUserByIntraLogin(intra_login: String!): User!
   Channel_findAll: [Chanel!]!
   Channel_findOne(id: Int!): Chanel!
   contacts(user_id: Int!): [Contact!]!
+  makeAuthentication(code: String!): User!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
   createChanel(createChanelInput: CreateChanelInput!): Chanel!
@@ -71,13 +70,7 @@ type Mutation {
   updateMessage(updateMsgInput: UpdateMessageInput!): Message!
   deleteMessage: Message!
   createContact(createContact: CreateContactInput!): Contact!
-}
-
-input CreateUserInput {
-  email: String!
-  intra_login: String!
-  nickname: String!
-  avatar: String
+  createUser(createAuthenticationInput: CreateAuthenticationInput!): User!
 }
 
 input UpdateUserInput {
@@ -129,4 +122,10 @@ input CreateContactInput {
   user_id: Int!
   contact_id: Int!
   pending: Boolean
+}
+
+input CreateAuthenticationInput {
+  email: String!
+  nickname: String!
+  avatar: String
 }
