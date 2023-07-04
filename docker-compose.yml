@@ -37,6 +37,7 @@ services:
       - CLIENT_SECRET_API_42=${CLIENT_SECRET_API_42}
       - CLIENT_SECRET_BACKEND=${CLIENT_SECRET_BACKEND}
     ports:
+      - "5555:5555"
       - "4000:4000"
     volumes:
       - "./srcs/back-end/ft_transcendence:/ft_transcendence"

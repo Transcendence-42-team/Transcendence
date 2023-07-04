@@ -65,7 +65,7 @@ const Chat = ({show}: {show: boolean}) => {
 			<h1>Messages en temps réel</h1>
 			<ul>
 				{messages.map(message => (
-					<div key={message.id}> {message.sender_id} : {message.content}</div>
+					<div key={message.id}> {message.content}</div>
 				))}
 			</ul>
 		</div>
