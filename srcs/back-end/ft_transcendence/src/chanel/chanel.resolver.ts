@@ -69,10 +69,4 @@ export class ChanelResolver {
 //   } 
 
 
-// @Subscription(() => Message)
-// 	AddMessageChan(){
-// 	  return pubSub.asyncIterator(NEW_MSG);
-// 	}
-
-
 }

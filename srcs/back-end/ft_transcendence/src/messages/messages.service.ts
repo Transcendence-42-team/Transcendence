@@ -16,6 +16,15 @@ export class MessagesService {
 		return this.prisma.message.findMany({});
 	}
 
+	async findAll_msg_chan(channelId: number) {
+		return this.prisma.message.findMany({
+		  where: {
+			channel_id: channelId // Utilisation de la variable channelId pour filtrer les messages
+		  }
+		});
+	  }
+	  
+
 	  async findOne_msg(id: number) {
 		return this.prisma.message.findUnique({where: {id: id}});
 	}

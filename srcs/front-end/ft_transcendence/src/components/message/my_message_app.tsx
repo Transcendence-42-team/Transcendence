@@ -6,6 +6,7 @@ import Chat from './message';
 import CreatMsg from './creat_message';
 import Contact from '../Contact/Contact';
 import '../Contact/css/Contact.css'
+import Chanel from '../Chanel/Chanel';
 
 const MyMessage = () => {
 	const [showChat, setShowChat] = useState(false);
@@ -41,9 +42,11 @@ const MyMessage = () => {
 			<button className='back-button'></button>
 			<button className='message-button' onClick={handleChatClick}></button>
 			<button className='avatar-button' onClick={handleContactClick}></button>
-		
+
 			<Chat show={showChat} />
 			<CreatMsg show={showChat} />
+			<Chanel show={showContact} />
+
 			<Contact show={showContact} />
 		</div>
 	);

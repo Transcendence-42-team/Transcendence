@@ -6,12 +6,10 @@ import { CREATE_CHANEL } from './graphql/MutationsChanel'
 export default function CreateChanelForm() {
 
 	const [createChanel] = useMutation(CREATE_CHANEL);
+	const userId = JSON.parse(sessionStorage.getItem('user') || '')?.id;
 
 	const [chanel, setChanel] = useState({
-		owner_id: "",
 		chanel_name: "",
-		chanel_size: "",
-		max_users: "",
 		logo: ""
 	});
 
@@ -19,10 +17,10 @@ export default function CreateChanelForm() {
 		event.preventDefault();
 		createChanel({variables: {
 			input: {
-				owner_id: parseInt(chanel.owner_id),
+				owner_id: userId,
 				chanel_name: chanel.chanel_name,
-				chanel_size: parseInt(chanel.chanel_size),
-				max_users: parseInt(chanel.max_users),
+				chanel_size: 10,
+				max_users: 10,
 				logo: chanel.logo
 			}
 		}}).catch((error) => {
@@ -40,16 +38,9 @@ export default function CreateChanelForm() {
 		<div>
 			<h3>Create Chanel Form</h3>
 			<form action="submit" onSubmit={handleSubmit}>
-				<label htmlFor="owner_id">
-					owner_id
-				</label>
-				<input
-					type="text"
-					name="owner_id"
-					value={chanel.owner_id}
-					placeholder="type her..."
-					onChange={handleChange}
-				/><br/>
+	
+
+
 				<label htmlFor="chanel_name">
 				chanel_name
 				</label>
@@ -60,26 +51,9 @@ export default function CreateChanelForm() {
 					placeholder="type her..."
 					onChange={handleChange}
 				/><br/>
-				<label htmlFor="chanel_size">
-				chanel_size
-				</label>
-				<input
-					type="text"
-					name="chanel_size"
-					value={chanel.chanel_size}
-					placeholder="type her..."
-					onChange={handleChange}
-				/><br/>
-				<label htmlFor="max_users">
-				max_users
-				</label>
-				<input
-					type="text"
-					name="max_users"
-					value={chanel.max_users}
-					placeholder="type her..."
-					onChange={handleChange}
-				/><br/>
+
+
+
 				<label htmlFor="logo">
 				logo
 				</label>

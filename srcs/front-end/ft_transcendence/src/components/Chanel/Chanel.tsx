@@ -3,8 +3,8 @@ import { useState } from "react";
 import UserChanelsRequests from "./ChanelsRequests";
 import CreateChanelForm from "./CreateChanelForm";
 import ChanelList from "./ListChanel";
-
-export default function Chanel() {
+import './css/Chanel.css';
+const Chanel = ({show}: {show: boolean}) => {
 	
 	const [refetchChanels, setRefecthChanel] = useState(false);
 
@@ -13,7 +13,7 @@ export default function Chanel() {
 	}
 
 	return (
-		<div>
+		<div className={`Chanel_pad ${show ? 'Chanel_show' : ''}`}>
 			<React.Fragment>
 				<CreateChanelForm />
 				<UserChanelsRequests 
@@ -28,3 +28,5 @@ export default function Chanel() {
 		</div>
 	)
 }
+
+export default Chanel;

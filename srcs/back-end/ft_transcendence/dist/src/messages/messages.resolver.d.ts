@@ -11,6 +11,13 @@ export declare class MessagesResolver {
         sender_id: number;
         channel_id: number;
     } & {})[]>;
+    findAll_msg_chan(channelId: number): Promise<({
+        id: number;
+        content: string;
+        sent_at: Date;
+        sender_id: number;
+        channel_id: number;
+    } & {})[]>;
     findOne_msg(id: number): Promise<{
         id: number;
         content: string;

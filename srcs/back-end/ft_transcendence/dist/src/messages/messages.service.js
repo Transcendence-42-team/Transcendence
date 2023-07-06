@@ -19,6 +19,13 @@ let MessagesService = exports.MessagesService = class MessagesService {
     async findAll_msg() {
         return this.prisma.message.findMany({});
     }
+    async findAll_msg_chan(channelId) {
+        return this.prisma.message.findMany({
+            where: {
+                channel_id: channelId
+            }
+        });
+    }
     async findOne_msg(id) {
         return this.prisma.message.findUnique({ where: { id: id } });
     }
