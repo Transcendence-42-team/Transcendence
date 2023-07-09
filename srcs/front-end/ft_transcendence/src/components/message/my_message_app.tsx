@@ -7,6 +7,7 @@ import CreatMsg from './creat_message';
 import Contact from '../Contact/Contact';
 import '../Contact/css/Contact.css'
 import Chanel from '../Chanel/Chanel';
+import { Link } from 'react-router-dom';
 
 const MyMessage = () => {
 	const [showChat, setShowChat] = useState(false);

@@ -37,6 +37,7 @@ import { ContactsModule } from './contacts/contacts.module';
 import 	{AuthMiddleware} from './utils/auth.utils'
 import { join } from 'path';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { UserChanelsModule } from './user-chanels/user-chanels.module';
 
 @Module({
 	imports: [
@@ -53,7 +54,8 @@ import { AuthenticationModule } from './authentication/authentication.module';
 		ChanelModule,
 		MessagesModule,
 		ContactsModule,
-		AuthenticationModule
+		AuthenticationModule,
+		UserChanelsModule
 	],
 })
 export class AppModule {

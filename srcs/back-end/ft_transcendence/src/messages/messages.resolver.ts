@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Subscriptio
 import { Message } from './entities/messages.entity';
 import { MessagesService } from './messages.service';
 import { CreateMessageInput } from './dto/create-messages.input';
-import { UpdateChanelInput } from 'src/chanel/dto/update-chanel.input';
 import { UpdateMessageInput } from './dto/update-message.input';
 import { PubSub } from 'graphql-subscriptions';
 

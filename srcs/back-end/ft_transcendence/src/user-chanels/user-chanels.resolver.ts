@@ -16,12 +16,12 @@ export class UserChanelsResolver {
 	addUser(@Args('addUserChanel') addUserChanel: AddUserChanel) {
 		return this.userChanelService.addUser(addUserChanel);
 	}
-	
+
 	@ResolveField(() => Chanel, {name: "chanels"})
 	ChanelsOwner(@Parent() chanel: UsersChanels) {
 		return this.chanelService.findOne(chanel.chanel_id);
 	}
-	
+
 	@Mutation(() => UsersChanels, {name: "acceptRequest"})
 	acceptRequest(@Args("key") Requestkey: UpdateChanelUserInput) {
 		return this.userChanelService.acceptRequest(Requestkey);

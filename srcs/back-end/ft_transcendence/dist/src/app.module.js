@@ -17,6 +17,7 @@ const contacts_module_1 = require("./contacts/contacts.module");
 const auth_utils_1 = require("./utils/auth.utils");
 const path_1 = require("path");
 const authentication_module_1 = require("./authentication/authentication.module");
+const user_chanels_module_1 = require("./user-chanels/user-chanels.module");
 let AppModule = exports.AppModule = class AppModule {
     configure(consumer) {
         consumer
@@ -40,7 +41,8 @@ exports.AppModule = AppModule = __decorate([
             chanel_module_1.ChanelModule,
             messages_module_1.MessagesModule,
             contacts_module_1.ContactsModule,
-            authentication_module_1.AuthenticationModule
+            authentication_module_1.AuthenticationModule,
+            user_chanels_module_1.UserChanelsModule
         ],
     })
 ], AppModule);

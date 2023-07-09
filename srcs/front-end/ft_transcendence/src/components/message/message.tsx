@@ -39,7 +39,6 @@ type Message = {
 
 const Chat = ({show}: {show: boolean}) => {
 	const { loading, error, data } = useQuery(GET_MESSAGES_BY_CHANNEL,{variables: {channelId: 1}});
-	// console.log("oeeeee  ", data.Message_findAll_msg_chan)
 	const [messages, setMessages] = useState<Message[]>([]);
 	// Si il y avais des chose dans intialMessages alors je le met dans mon useState
 

@@ -44,7 +44,7 @@ export default function ListContact({refetchContact, refetchProps}: IProposConta
 							label="Delete"
 						/>
 						<AddChanel
-							label="Add To Chan"
+							label="send him a Message"
 							refetchContact={refetchContact}
 							element={element}
 						/>
