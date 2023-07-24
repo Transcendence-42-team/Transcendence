@@ -1,6 +1,4 @@
-import {useEffect, useState, useContext} from 'react';
-import {gql, useQuery} from '@apollo/client';
-import {SubscriptionClient} from 'subscriptions-transport-ws';
+import {useState} from 'react';
 import CreateMsg from './micro-components/createMessage'
 import './css/messages.css';
 import {Link} from 'react-router-dom';
@@ -9,32 +7,6 @@ import { Chanel } from '../interfaces/interfaces';
 import ListChanel from './micro-components/ListChanel';
 import HeaderChanel from './micro-components/HeaderChanel';
 
-//je me connect a mon server via le protocol websocket
-const wsClient = new SubscriptionClient('ws://localhost:4000/graphql', {});
-
-const NewMessageSubscription = gql`
-  subscription ($input: Int!) {
-	addmessage(channel_id: $input) {
-		id
-		content
-		sender_id
-	}
-	}
-`;
-
-const GET_MESSAGES_BY_CHANNEL = gql`
-  query GetMessagesByChannel($channelId: Int!) {
-    Message_findAll_msg_chan(channelId: $channelId) {
-      content
-    }
-  }
-`;
-
-type Message = {
-	id: number;
-	sender_id: number;
-	content: string;
-};
 
 const Message = () => {
 
@@ -61,6 +33,8 @@ const Message = () => {
 		});
 	}
 
+
+
 	const handleRefetch = () => {
 		setRefetchChat(prevValue => !prevValue);
 	}
@@ -86,19 +60,17 @@ const Message = () => {
 				  <div className="chat-history">
 					<ChatBox chan={chanel_focus} />
 				  </div>
+
 				  <div className="chat-message ">
-
 					<div className="input-group mb-0">
-						<CreateMsg />
+						<CreateMsg chan={chanel_focus} />
 					</div>
-
-
 				  </div>
 				</div>
 			  </div>
 			 </div> 
 		  </div>
-		// </div>
+		</div>
 	  );
 };
 

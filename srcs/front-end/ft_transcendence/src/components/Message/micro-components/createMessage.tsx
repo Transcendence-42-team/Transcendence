@@ -5,21 +5,32 @@ import {useMutation} from '@apollo/client';
 import { CREATE_MSG } from '../graphql/Mutation';
 
 
-const CreateMsg = () => {
-	// const userId = JSON.parse(sessionStorage.getItem('user') || '')?.id;
+type channelfocus = {
+	id: string,
+	chanel_name: string,
+	chanel_size: string,
+	max_users: string,
+	logo: string,
+}
+
+interface CreatMessageprops{
+	chan:channelfocus
+}
+
+const CreateMsg: React.FC<CreatMessageprops> = ({ chan }) => {
+	const userId = JSON.parse(sessionStorage.getItem('user') || '')?.id;
 	const userNickname = JSON.parse(sessionStorage.getItem('user') || '')?.nickname;
 	const [Content, setContent] = useState('');
-	const [ChanId, setChanId] = useState('');
+	// const [ChanId, setChanId] = useState('');
 	const [createMessage] = useMutation(CREATE_MSG);
-
 	const handlecreateMessage = async () => {
 		try {
 			const response = await createMessage({
 				variables: {
 					createMsgInput: {
-						sender_id: 1,
+						sender_id: userId,
 						content: userNickname + ": " + Content,
-						channel_id: 1,
+						channel_id: +chan.id,
 					},
 				},
 			});
@@ -34,9 +45,9 @@ const CreateMsg = () => {
 		setContent(e.target.value);
 	};
 
-	const handlechannelIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setChanId(e.target.value);
-	};
+	// const handlechannelIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	setChanId(e.target.value);
+	// };
 
 	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && Content.trim() !== '') {
@@ -55,7 +66,7 @@ const CreateMsg = () => {
 				name='the Content'
 				onKeyPress={handleKeyPress}
 				className='input-message' />
-				<button onClick={handlecreateMessage} disabled={!Content} className='send-button' > send </button>
+				<button onClick={handlecreateMessage} disabled={!Content || !+chan.id} className='send-button' > send </button>
 			</div>
 
 			{/* <div>

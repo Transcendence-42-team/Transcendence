@@ -28,8 +28,8 @@ interface ChatBoxProps{
 	chan:channelfocus
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ chan }) => {
-	const { loading, error, data, refetch } = useQuery(GET_MESSAGES_BY_CHANNEL,{variables: {channelId: chan.id}});
+const ChatBox: React.FC<ChatBoxProps> = ({ chan }: { chan: channelfocus }) => {
+	const { loading, error, data, refetch } = useQuery(GET_MESSAGES_BY_CHANNEL,{variables: {channelId: +chan.id}});
 	const [messages, setMessages] = useState<Message[]>([]);
 
 	useEffect(() => {
@@ -40,7 +40,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ chan }) => {
 	}, [data]);
 
 	useEffect(() => {
-		const subscription = wsClient.request({query: NewMessageSubscription, variables: { input: chan.id }}).subscribe({
+		const subscription = wsClient.request({query: NewMessageSubscription, variables: { input: +chan.id }}).subscribe({
 			next(response) {
 				// Next est une fonction de suscribe qui s'execute a chaque nouvelle creation de message 
 				// reponse c'est la ou les reponse de notre server est stocker.
@@ -56,7 +56,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ chan }) => {
 		return () => {
 			subscription.unsubscribe();
 		};
-	}, []);
+	}, [chan.id]);
 
 	return (
 
