@@ -55,7 +55,9 @@ model Chanel {
 	chanel_name			String
 	chanel_size			Int
 	max_users			Int
+	interlocutor_id     Int?
 	logo				String?
+	directMsg			Boolean		@default(false)
 	owner				User		@relation(fields: [owner_id], references: [id])
 	users				Users_Chanels[]
 	messages			Message[]	@relation("ChanelMessages")

@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {  useQuery } from "@apollo/client";
 import { IPropsChanel } from "../../interfaces/interfaces";
 import { UserChanels } from "../../interfaces/interfaces";
 import QuiteChanel from "./QuitChanel";
 import { CHANELS_LIST } from '../graphql/QueryChanel'
+import Direct_message from "./direct-message";
 
 export default function ChanelList({refetchChanels, handleChanelRefetch, user, handleChange}: IPropsChanel) {
 
@@ -12,6 +13,8 @@ export default function ChanelList({refetchChanels, handleChanelRefetch, user, h
 			input: user.id
 		}
 	})
+
+	const [showDirectMessage, setShowDirectMessage] = useState(false);
 
 	useEffect(() => {
 		refetch();
@@ -37,7 +40,6 @@ export default function ChanelList({refetchChanels, handleChanelRefetch, user, h
 					const unique_key = `${chanel.user_id}-${chanel.chanels.id}`;
 					return (<ul className="list-unstyled chat-list mt-2 mb-0" key={unique_key}>
 					<li >
-						{/* <CardChanel /> */}
 						<div><b>{chanel.chanels.chanel_name}</b></div>
 						<button onClick={() => handleChange(chanel.chanels)}>her</button>
 						<QuiteChanel
@@ -46,8 +48,17 @@ export default function ChanelList({refetchChanels, handleChanelRefetch, user, h
 							handleChanelRefecth={handleChanelRefetch}
 							/>
 					</li>
+					
 				</ul>);
 			})
-		}</div>
+		}
+		<div className="list-unstyled chat-list mt-2 mb-0">
+			{showDirectMessage ? (
+			<Direct_message />
+			) : (<button onClick={() => setShowDirectMessage(true)}>direct message</button>)
+			}
+		</div>
+		{/* <button onClick={() => handleChange(chanel.chanels)}>direct message</button> */}
+		</div>
 	)
 }

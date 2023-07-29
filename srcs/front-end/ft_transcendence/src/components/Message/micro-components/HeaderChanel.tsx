@@ -1,6 +1,18 @@
 import React from "react";
 
-export default function HeaderChanel() {
+type channelfocus = {
+	id: string,
+	chanel_name: string,
+	chanel_size: string,
+	max_users: string,
+	logo: string,
+}
+
+interface ChatBoxProps{
+	chan:channelfocus
+}
+
+const HeaderChanel: React.FC<ChatBoxProps> = ({ chan }: { chan: channelfocus }) => {
 
 	return (
 		<div className="chat-header">
@@ -11,7 +23,7 @@ export default function HeaderChanel() {
 				</a>
 				{/* ici on affichera un point vers si le user est connecter ou sinon vert si il est connecter*/ }
 				<div className="chat-about">
-					<h6 className="m-b-0"> nickname </h6>
+					<h6 className="m-b-0"> {chan.chanel_name} </h6>
 					<small>Last seen: 2 hours ago</small>
 				</div>
 				</div>
@@ -20,3 +32,5 @@ export default function HeaderChanel() {
 		</div>
 	);
 }
+
+export default HeaderChanel;

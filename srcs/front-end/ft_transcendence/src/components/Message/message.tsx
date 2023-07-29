@@ -6,7 +6,7 @@ import ChatBox from './micro-components/ChatBox';
 import { Chanel } from '../interfaces/interfaces';
 import ListChanel from './micro-components/ListChanel';
 import HeaderChanel from './micro-components/HeaderChanel';
-
+import Direct_message from './micro-components/direct-message';
 
 const Message = () => {
 
@@ -55,17 +55,18 @@ const Message = () => {
 					user={user}
 					handleChange={handleChange}
 				/>
+				  {/* oososo */}
 				<div className="chat"> 
-				  <HeaderChanel />
+				  <HeaderChanel chan={chanel_focus} />
 				  <div className="chat-history">
 					<ChatBox chan={chanel_focus} />
 				  </div>
-
 				  <div className="chat-message ">
 					<div className="input-group mb-0">
 						<CreateMsg chan={chanel_focus} />
 					</div>
 				  </div>
+				
 				</div>
 			  </div>
 			 </div> 

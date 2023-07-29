@@ -1,6 +1,6 @@
 import React from "react";
 import {useEffect, useState, useContext} from 'react';
-import {gql, useQuery} from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import {SubscriptionClient} from 'subscriptions-transport-ws';
 import CreateMsg from './createMessage'
 import {Link} from 'react-router-dom';

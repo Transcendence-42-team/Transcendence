@@ -12,12 +12,10 @@ export const REFUSE_CONTACT = gql`mutation RefuseRequestContact($input: Int!){
 	}
 }`
 
-export const ADD_USER_IN_CHANEL = gql`mutation AddUserInChanel($input: AddUserChanel!) {
+export const ADD_USER_IN_CHANEL = gql`
+  mutation AddUserInChanel($input: AddUserChanel!) {
 	addUser(addUserChanel: $input) {
 		user_id
-		chanels {
-			chanel_id
-		}
 	}
 }`
 

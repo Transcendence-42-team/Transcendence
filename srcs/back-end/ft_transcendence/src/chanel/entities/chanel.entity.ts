@@ -15,12 +15,17 @@ export class Chanel {
 	@Field({nullable: true})
 	chanel_size: number;
 
+	@Field(() => Boolean)
+	directMsg: boolean;
+
 	@Field({nullable: true})
 	max_users: number;
 
 	@Field({nullable: true})
 	logo: string;
-  
+
+	@Field({nullable: true})
+	interlocutor_id: number;
 }
 
 

@@ -18,8 +18,10 @@ type Chanel {
   owner_id: Int!
   chanel_name: String
   chanel_size: Float
+  directMsg: Boolean!
   max_users: Float
   logo: String
+  interlocutor_id: Float
   messages: [Message!]!
 }
 
@@ -59,6 +61,7 @@ type Query {
   searchUsers(research: String!, user_id: Int!): [User!]!
   Channel_findOne(id: Int!): Chanel!
   chanels(user_id: Int!): [Chanel!]!
+  getChannelByOwnersAndInterlocutor(userId1: Int!, userId2: Int!): Chanel!
   Message_findAll_msg: [Message!]!
   Message_findAll_msg_chan(channelId: Int!): [Message!]!
   Message_findOne_msg(id: Int!): Message!
@@ -105,8 +108,10 @@ input CreateChanelInput {
   owner_id: Int
   chanel_name: String
   chanel_size: Int
+  privmsg: Boolean
   max_users: Int
   logo: String
+  interlocutor_id: Int
 }
 
 input UpdateChanelInput {
