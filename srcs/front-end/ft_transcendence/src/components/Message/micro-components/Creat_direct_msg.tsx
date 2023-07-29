@@ -3,10 +3,19 @@ import { IContact } from "../../interfaces/interfaces";
 import { useQuery, useMutation } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { CREATE_CHANEL } from '../graphql/MutationsChanel';
-import MyComponent from './creat_user_chan';
+import CreatUserChan from './creat_user_chan';
 import { Chanel } from '../../interfaces/interfaces';
 
-const Creat_direct_msg = ({interlocutor}: {interlocutor: IContact}) => {
+
+interface MyProps {
+	interlocutor: IContact;
+	handleChanelRefecth: () => void;
+	handleChange: (element: Chanel) => void;
+}
+
+
+
+const Creat_direct_msg = ({interlocutor, handleChanelRefecth, handleChange}: MyProps) => {
 
 	const user = JSON.parse(sessionStorage.getItem('user') || '');
 	const [hasFetchedData, setHasFetchedData] = useState<Chanel>(); // Nouvelle variable d'état
@@ -19,7 +28,6 @@ const Creat_direct_msg = ({interlocutor}: {interlocutor: IContact}) => {
 	});
 	
 	const [createChannel] = useMutation(CREATE_CHANEL);
-	
 	
 	// const channel = data?.getChannelByOwnersAndInterlocutor;
 	useEffect(() => {
@@ -45,25 +53,21 @@ const Creat_direct_msg = ({interlocutor}: {interlocutor: IContact}) => {
 			}
 		  }).then((response) => {
 			const responseData = response.data; // Les données renvoyées par la mutation
-			// console.log('Réponse de la mutation :', responseData);
-			// console.log('Type de responseData :', typeof responseData);
-
 			setHasFetchedData(responseData.createChanel);}).catch((error) => {
 			console.log("Html: ", error.networkError.result);
 		  });
 		}
 	  }, [loading]);
 	
-	// if (loading) {
-	//   return <div>Loading...</div>;
+	// if (error) {
+	//   return <div>ERROR</div>;
 	// }
-
+	  handleChanelRefecth();
 	if (!data && hasFetchedData) {
-		
-		// console.log('dans le creat ===>>>  ', hasFetchedData?.id)
-	  return (
+			handleChange(hasFetchedData);
+		return (
 		<div>
-      		{<MyComponent chan={data} hasFetchedData={hasFetchedData} />}
+      		{<CreatUserChan chan={data} hasFetchedData={hasFetchedData} handleChange={handleChange} />}
 			les nvx channel sont sensé etre cree
 		</div>
 	  );
@@ -71,7 +75,7 @@ const Creat_direct_msg = ({interlocutor}: {interlocutor: IContact}) => {
 
 	return(
 		<div>
-      		{/* {<MyComponent chan={data}/>} */}
+      		{/* {<CreatUserChan chan={data}/>} */}
 			wee
 		</div>
 

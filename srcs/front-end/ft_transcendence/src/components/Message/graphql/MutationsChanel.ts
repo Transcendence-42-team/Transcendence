@@ -11,6 +11,9 @@ export 	const CREATE_CHANEL = gql`mutation CreateChanel($input: CreateChanelInpu
 		id
 		owner_id
 		chanel_name
+		chanel_size
+		max_users
+		logo
 		interlocutor_id
 	}
 }`

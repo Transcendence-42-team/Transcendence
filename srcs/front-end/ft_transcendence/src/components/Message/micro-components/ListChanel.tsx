@@ -29,11 +29,11 @@ export default function ChanelList({refetchChanels, handleChanelRefetch, user, h
 	if (!data)
 		return (<div>nothing to see her</div>)
 
-	if (data)
-		console.log(data);
+	// if (data)
+	// 	console.log(data);
 
 	return (
-		
+
 		<div id="plist" className="people-list">
 			<h3>My Chanels</h3>{
 				data.myChanels.map((chanel: UserChanels, index: number) => {
@@ -48,14 +48,20 @@ export default function ChanelList({refetchChanels, handleChanelRefetch, user, h
 							handleChanelRefecth={handleChanelRefetch}
 							/>
 					</li>
-					
+
 				</ul>);
 			})
 		}
 		<div className="list-unstyled chat-list mt-2 mb-0">
 			{showDirectMessage ? (
-			<Direct_message />
+			<Direct_message
+			refetchChanels={refetchChanels}
+			handleChanelRefetch={handleChanelRefetch}
+			user={user}
+			handleChange={handleChange}
+			/> 
 			) : (<button onClick={() => setShowDirectMessage(true)}>direct message</button>)
+				 
 			}
 		</div>
 		{/* <button onClick={() => handleChange(chanel.chanels)}>direct message</button> */}

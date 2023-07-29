@@ -9,9 +9,10 @@ import { Chanel } from '../../interfaces/interfaces';
 interface MyComponentProps {
 	chan: Chanel;
 	hasFetchedData: Chanel | undefined; // Définir le type de l'état hasFetchedData
+    handleChange: (element: Chanel) => void;
 }
 
-const MyComponent = ({ chan, hasFetchedData }: MyComponentProps) => {
+const CreatUserChan = ({ chan, hasFetchedData, handleChange }: MyComponentProps) => {
   const [createMutation1, { loading: loading1, error: error1 }] = useMutation(ADD_USER_IN_CHANEL);
   const [createMutation2, { loading: loading2, error: error2 }] = useMutation(ADD_USER_IN_CHANEL);
   const user = JSON.parse(sessionStorage.getItem('user') || '');
@@ -22,8 +23,7 @@ useEffect(() => {
 
 	
 	if (hasFetchedData && !isConditionExecuted.current){
-		console.log('weeeeeee ==>>  ', hasFetchedData);
-	
+		
 		createMutation1({
 			variables: {
 			  input:{
@@ -55,10 +55,13 @@ useEffect(() => {
     return <div>Loading...</div>;
   }
 
-//   if (error1 || error2) {
-//     return <div>Error: {error1 ? error1.message : error2.message}</div>;
-//   }
+  if (error1 || error2) {
+    return <div>Error: in the double mutation</div>;
+  }
 
+  if(hasFetchedData){
+	  handleChange(hasFetchedData)
+	}
   // Afficher le contenu du composant ici
   return (
     <div>
@@ -67,4 +70,4 @@ useEffect(() => {
   );
 };
 
-export default MyComponent;
+export default CreatUserChan;
