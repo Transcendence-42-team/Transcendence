@@ -62,9 +62,9 @@ const Creat_direct_msg = ({interlocutor, handleChanelRefecth, handleChange}: MyP
 	// if (error) {
 	//   return <div>ERROR</div>;
 	// }
-	  handleChanelRefecth();
 	if (!data && hasFetchedData) {
-			handleChange(hasFetchedData);
+		handleChanelRefecth();
+			// handleChange(hasFetchedData);
 		return (
 		<div>
       		{<CreatUserChan chan={data} hasFetchedData={hasFetchedData} handleChange={handleChange} />}
@@ -72,6 +72,8 @@ const Creat_direct_msg = ({interlocutor, handleChanelRefecth, handleChange}: MyP
 		</div>
 	  );
 	}
+
+	//ici si data existais deja alors je vais handleChange(data.createChanel) ici;
 
 	return(
 		<div>
