@@ -22,7 +22,6 @@ export default function AddUserInChan({chanel_focus, user} : IAddUserInChanProps
 	});
 
 	const [addUser] = useMutation(ADD_CHANEL);
-	refetch();
 
 	if (error)
 		return (<div>An Error as occured</div>);
