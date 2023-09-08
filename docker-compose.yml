@@ -41,6 +41,8 @@ services:
       - CLIENT_SECRET_GMAIL_API=${CLIENT_SECRET_GMAIL_API}
       - REFRESH_TOKEN_GMAIL_API=${REFRESH_TOKEN_GMAIL_API}
       - EMAIL=${EMAIL}
+      - IP_HOST=${IP_HOST}
+
     ports:
       - "4000:4000"
       - "5555:5555"
@@ -63,6 +65,8 @@ services:
       - REACT_APP_API_42_URL=${API_42_URL}
       - REACT_APP_WEBSITE_URL=${WEBSITE_URL}
       - REACT_APP_CLIENT_SECRET_BACKEND=${CLIENT_SECRET_BACKEND}
+      - REACT_APP_IP_HOST=${IP_HOST}
+
     ports:
       - "8080:8080"
     volumes:

@@ -1,14 +1,14 @@
-import { Resolver, Query, Mutation, Args, Context, Int,  } from '@nestjs/graphql';
-import { User } from 'src/users/entities/user.entity';
-import { CreateUserInput } from 'src/users/dto/create-user.input';
-import { AuthenticationService, __ACCESS__, __CONNECTED__, __DISCONNECTED__, __NEED_TFA__ } from './authentication.service';
-import { MailingService } from './mailing/mailing.service';
-import { generateTwoFactorCode } from 'src/utils/auth.utils';
-import axios, { AxiosResponse } from 'axios';
-import { UpdateAuthenticationInput } from './dto/update-authentication.input';
-import { UpdateUserInput } from 'src/users/dto/update-user.input';
-import { UsersResolver } from 'src/users/users.resolver';
-import { saveBase64ToFile } from 'src/utils/upload.utils';
+import { Resolver, Query, Mutation, Args, Context, Int,  } from "@nestjs/graphql";
+import { User } from "src/users/entities/user.entity";
+import { CreateUserInput } from "src/users/dto/create-user.input";
+import { AuthenticationService, __ACCESS__, __CONNECTED__, __DISCONNECTED__, __NEED_TFA__ } from "./authentication.service";
+import { MailingService } from "./mailing/mailing.service";
+import { generateTwoFactorCode } from "src/utils/auth.utils";
+import axios, { AxiosResponse } from "axios";
+import { UpdateAuthenticationInput } from "./dto/update-authentication.input";
+import { UpdateUserInput } from "src/users/dto/update-user.input";
+import { UsersResolver } from "src/users/users.resolver";
+import { saveBase64ToFile } from "src/utils/upload.utils";
 
 
 
@@ -24,7 +24,7 @@ export class AuthenticationResolver {
 
   @Mutation(() => User)
   async createUser (
-    @Args('updateAuthenticationInput')updateAuthenticationInput:UpdateAuthenticationInput,
+    @Args("updateAuthenticationInput")updateAuthenticationInput:UpdateAuthenticationInput,
     @Context() context) {
       if (context.req.userId)
       {
@@ -32,10 +32,10 @@ export class AuthenticationResolver {
         let  {avatar, ...restupdateAuthenticationInput} = updateAuthenticationInput;
       // DEFINE THE AVATAR IMG
       avatar = avatar ? 
-      'http://localhost:4000/uploads/' + await saveBase64ToFile(avatar, context.req.userId) 
+      "http://" + process.env.IP_HOST + ":4000/uploads/" + await saveBase64ToFile(avatar, context.req.userId) 
       :
-      'http://localhost:4000/uploads/default_avatar.jpg';
-
+      "http://" + process.env.IP_HOST + ":4000/uploads/default_avatar.jpg";
+		console.log( " =====>>>> les avatar  ", avatar);
         try {
           const updateUserDataInput: UpdateUserInput = {
             ...restupdateAuthenticationInput,
@@ -55,14 +55,14 @@ export class AuthenticationResolver {
       }
   } 
 
-  @Query(() => User, { name: 'makeAuthentication' })
-  async makeAuthentication(@Args('code') code: string) {
+  @Query(() => User, { name: "makeAuthentication" })
+  async makeAuthentication(@Args("code") code: string) {
 
     // GET INFO FROM 42 API
     let profileResponse: AxiosResponse<any, any>;
     try {
-      const response = await axios.post('https://api.intra.42.fr/oauth/token', {
-        grant_type: 'authorization_code',
+      const response = await axios.post("https://api.intra.42.fr/oauth/token", {
+        grant_type: "authorization_code",
         code: code,
         client_id: process.env.CLIENT_ID_42_API,
         client_secret: process.env.CLIENT_SECRET_42_API,
@@ -70,7 +70,7 @@ export class AuthenticationResolver {
       });
       
       const access_token = response.data.access_token;
-      profileResponse = await axios.get('https://api.intra.42.fr/v2/me', {
+      profileResponse = await axios.get("https://api.intra.42.fr/v2/me", {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
@@ -105,7 +105,7 @@ export class AuthenticationResolver {
   }
 
   @Query(() => User)
-  async checkTwoAuthenticationFactor(@Args('code') code: string, 
+  async checkTwoAuthenticationFactor(@Args("code") code: string, 
   @Context() context) {
 
     const user = await this.userResolveur.findUserById(context.token.userId)
@@ -117,16 +117,16 @@ export class AuthenticationResolver {
           id:  context.token.userId,
           connection_status: __ACCESS__,
           state: __CONNECTED__,
-          tfa_code : 'true'
+          tfa_code : "true"
         };
         return await this.userResolveur.updateUser(updateUserDataInput)
       } 
       else {
-        throw new Error('Invalid two-factor authentication code');
+        throw new Error("Invalid two-factor authentication code");
       }
     }
     else {
-      throw new Error('User does not found');
+      throw new Error("User does not found");
     }
   }
 

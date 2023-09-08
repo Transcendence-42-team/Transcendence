@@ -17,7 +17,7 @@ export function WebSocketProvider({children}: {children: React.ReactNode}) {
 	
 	useEffect(() => {
 		if (pendingUser != null && !wsClient) {
-			const client = new SubscriptionClient('ws://localhost:4000/graphql', {
+			const client = new SubscriptionClient("ws://" + process.env.REACT_APP_IP_HOST + ":4000/graphql", {
 				reconnect: true,
 				connectionParams: {
 					headers: pendingUser.token

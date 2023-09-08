@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
 # Installation de la dernière version de Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
+RUN	apt install net-tools -y
 
 # Copie des fichiers du projet
 COPY ./ft_transcendence /ft_transcendence/
@@ -23,6 +24,9 @@ RUN npm install -g \
 
 # Définition du répertoire de travail
 WORKDIR /ft_transcendence
+# RUN chmod 777 /my_script.sh
+
+# RUN /ft_transcendence -c "source /my_script.sh"
 
 RUN npm install
 

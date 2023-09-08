@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateChanelInput } from './dto/create-chanel.input';
-import { UpdateChanelInput } from './dto/update-chanel.input';
-import { PrismaService } from 'prisma/prisma.service';
-import { Chanel } from './entities/chanel.entity';
-import { UsersService } from 'src/users/users.service';
-import { saveBase64ToFile, saveBase64ToFileChan } from 'src/utils/upload.utils';
+import { Injectable } from "@nestjs/common";
+import { CreateChanelInput } from "./dto/create-chanel.input";
+import { UpdateChanelInput } from "./dto/update-chanel.input";
+import { PrismaService } from "prisma/prisma.service";
+import { Chanel } from "./entities/chanel.entity";
+import { UsersService } from "src/users/users.service";
+import { saveBase64ToFile, saveBase64ToFileChan } from "src/utils/upload.utils";
 
 @Injectable()
 export class ChanelService {
@@ -27,16 +27,16 @@ export class ChanelService {
         },
 		include: {interlocutor: true, owner: true}
       })
-    //   console.log('ici====>>> ',createChanelInput.logo);
+    //   console.log("ici====>>> ",createChanelInput.logo);
 	
 	let logo = createChanelInput.logo;
 	// console.log("teste11===>>>",createChanelInput.directMsg)
 	if( createChanelInput.directMsg === false || createChanelInput.directMsg === undefined ) {
 			// console.log("teste12")
-		   logo = createChanelInput.logo != '' ?
-			'http://localhost:4000/uploads/' + await saveBase64ToFileChan(createChanelInput.logo, chanelRes.id) 
+		   logo = createChanelInput.logo != "" ?
+			"http://" + process.env.IP_HOST +":4000/uploads/" + await saveBase64ToFileChan(createChanelInput.logo, chanelRes.id) 
 			:
-			'http://localhost:4000/uploads/default_chanel.png';
+			"http://" + process.env.IP_HOST + ":4000/uploads/default_chanel.png";
 	
 	  }
       await this.prisma.chanel.update({
@@ -151,7 +151,7 @@ export class ChanelService {
 
 //       return updatedChannel;
 //     } catch (error) {
-//       console.error('Error adding banned user:', error);
+//       console.error("Error adding banned user:", error);
 //       return null;
 //     }
 //   }

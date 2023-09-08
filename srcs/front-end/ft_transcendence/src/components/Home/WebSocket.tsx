@@ -5,7 +5,7 @@ let wsClient : SubscriptionClient | null = null;
 
 export const initializeWebSocketClient = (token: string) => {
   if (!wsClient) {
-    wsClient = new SubscriptionClient('ws://localhost:4000/graphql', {
+    wsClient = new SubscriptionClient("ws://" + process.env.REACT_APP_IP_HOST + ":4000/graphql", {
       reconnect: true,
       connectionParams: {
         headers: token

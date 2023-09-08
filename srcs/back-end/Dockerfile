@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
 # Installation de la dernière version de Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
-
+RUN	apt install net-tools -y
 # Installation de global packages npm
 RUN npm install -g \
     @nestjs/cli \
@@ -23,7 +23,11 @@ COPY init.sh ./
 
 
 # Définition du répertoire de travail
-WORKDIR /ft_transcendence/
+WORKDIR /ft_transcendence
+
+# RUN /ft_transcendence -c "chmod 777 /my_script.sh"
+
+# RUN /ft_transcendence -c "source /my_script.sh"
 
 # Installation des packages npm supplémentaires
 RUN npm install @nestjs/graphql \
@@ -31,7 +35,7 @@ RUN npm install @nestjs/graphql \
     class-validator \
     class-transformer \
     @prisma/client	\
-	graphql-subscriptions 
+	graphql-subscriptions
 
 
 # Définition du point d'entrée
